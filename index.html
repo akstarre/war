@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="Your description goes here">
+	<meta name="keywords" content="one, two, three">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Blank Template</title>
+
+	<!-- external CSS link -->
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+	<div id="war_Container">
+		<div>
+			<div id="buttons_Container">
+				<h1>This is war!</h1>
+				<button id="new" class="">New Game</button>
+				<button id="deal" class="hidden">Deal Cards</button>
+				<button id="draw" class="hidden">Draw Cards</button>
+				<button id="war" class="hidden">Declare War!</button>
+				<button id="check" class="hidden">Check Win!</button>
+			</div>
+			<img id="" class="deck" src="/images/Back_of_cards.png" alt="">
+		</div>
+		<div id="player_Containers" class="hidden">
+			<div id="player1_Container">
+				<h2>Player 1</h2>
+				<div class="card_counter">
+					<h4>Card count:</h4>
+					<h4 id="p1cards"></h4>
+				</div>
+				<img id="p1deck" class="deck hidden" src="/images/Back_of_cards.png" alt="">
+				<img id="player1" class="hidden" src="" alt="playing card">
+				<h3 id="winning1"></h3>
+				<h4 id="p1value"></h4>
+			</div>
+			<div id="player2_Container">
+				<h2>Player 2</h2>
+				<div class="card_counter">
+					<h4>Card count:</h4>
+					<h4 id="p2cards"></h4>
+				</div>
+				<img id="p2deck" class="deck hidden" src="/images/Back_of_cards.png" alt="">
+				<img id="player2" class="hidden" src="" alt="playing card">
+				<h3 id="winning2"></h3>
+				<h4 id="p2value"></h4>
+			</div>
+		</div>
+	</div>
+
+
+	<script type="text/javascript" src="js/main.js"></script>
+</body>
+
+</html>
