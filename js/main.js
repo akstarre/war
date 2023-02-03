@@ -5,6 +5,9 @@ const base_url = "https://www.deckofcardsapi.com/"
 const sendRequest = async (URL) => {
   try {
     const response = await fetch(`${base_url}${URL}`)
+    if (!response.ok) {
+      throw new Error(await response.text())
+    }
     const data = await response.json() //parse as JSON
     return data
   } catch (err) {
@@ -71,19 +74,18 @@ function dealCards() {
 //Draw Cards from piles
 document.querySelector('#draw').addEventListener('click', drawCards)
 
-function drawCards() {
-  drawP1Card()
-  drawP2Card()
+async function drawCards() {
+  const [player1, player2] = await Promise.allSettled([drawP1Card(), drawP2Card()])
   document.querySelector('#player1').classList.remove('hidden')
   document.querySelector('#player2').classList.remove('hidden')
 
-  if (data.piles.player1.remaining == 0) {
+  if (player1.remaining == 0) {
     document.querySelector('#winning1').innerText = "PLAYER 2 HAS WON THE GAME!"
     document.querySelector('#winning2').innerText = "PLAYER 2 HAS WON THE GAME!"
     document.querySelector('#draw').classList.add('hidden')
     document.querySelector('#check').classList.add('hidden')
     document.querySelector('#war').classList.add('hidden')
-  } else if (data.piles.player2.remaining == 0) {
+  } else if (player2.remaining == 0) {
     document.querySelector('#winning1').innerText = "PLAYER 1 HAS WON THE GAME!"
     document.querySelector('#winning2').innerText = "PLAYER 1 HAS WON THE GAME!"
     document.querySelector('#draw').classList.add('hidden')
@@ -94,26 +96,28 @@ function drawCards() {
 
 //Draw player 1 card
 const drawP1Card = async () => {
-  await sendRequest(`api/deck/${localStorage.getItem('deckID')}/pile/player1/draw/random/?count=1`)
+  return sendRequest(`api/deck/${localStorage.getItem('deckID')}/pile/player1/draw/random/?count=1`)
     .then(data => {
       console.log(data)
       document.querySelector('#player1').src = data.cards[0].image
       document.querySelector('#p1cards').innerText = data.piles.player1.remaining
       localStorage.setItem('p1Val', data.cards[0].value)
       localStorage.setItem('p1Code', data.cards[0].code)
+      return data.piles.player1
     })
 
 }
 
 //Draw player 2 card
 const drawP2Card = async () => {
-  await sendRequest(`api/deck/${localStorage.getItem('deckID')}/pile/player2/draw/random/?count=1`)
+  return sendRequest(`api/deck/${localStorage.getItem('deckID')}/pile/player2/draw/random/?count=1`)
     .then(data => {
       console.log(data)
       document.querySelector('#player2').src = data.cards[0].image
       document.querySelector('#p2cards').innerText = data.piles.player2.remaining
       localStorage.setItem('p2Val', data.cards[0].value)
       localStorage.setItem('p2Code', data.cards[0].code)
+      return data.piles.player2
     })
 }
 
@@ -151,7 +155,6 @@ function checkWin() {
     document.querySelector('#war').classList.remove('hidden')
     document.querySelector('#draw').classList.add('hidden')
   }
-
 }
 
 //Declare War!!
